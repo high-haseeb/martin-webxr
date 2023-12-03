@@ -11,7 +11,7 @@ import React, { useState } from "react";
 
 function RightPane() {
   return (
-    <div className="fixed top-0 right-0 w-1/12 h-screen border-l-2">
+    <div className="fixed top-0 right-0 w-1/12 h-screen border-l-2 hidden md:block lg:block">
       <div className="flex flex-col h-full py-8 space-y-8 items-center ">
         <ButtonUI name={faBars} />
         <ButtonUI name={faVrCardboard} />

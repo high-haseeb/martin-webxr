@@ -5,7 +5,7 @@ import React from "react";
 
 function SettingsPane() {
   return (
-    <div className="fixed top-0 left-0 w-1/12 h-screen border-r-2">
+    <div className="fixed top-0 left-0 w-1/12 h-screen border-r-2 hidden md:block lg:block">
       <div className="flex flex-col h-full py-8 space-y-8 items-center">
         <ButtonUI name={faImages}/>
         <ButtonUI name={faCube}/>
