@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.fixed-container-left {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 8.33333%;
+  height: 100vh;
+  border-left: 2px solid;
+  border-color: #e0e0e0;
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+  @media screen and (min-width: 1024px) {
+    display: block;
+  }
+}
+.flex-container-left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 4rem;
+  align-items: center;
+}
+
+.flex-container-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 4rem;
+  align-items: center;
+}
+.flex-container-right > * {
+  margin-top: 4rem;
+  cursor: pointer;
+}
+.flex-container-left > * {
+  margin-top: 4rem;
+  cursor: pointer;
+}
+.fixed-container-right {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8.33333%;
+  height: 100vh;
+  border-right: 2px solid;
+  border-color: #e0e0e0;
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+  @media screen and (min-width: 1024px) {
+    display: block;
+  }
+}
+
+.flex-container-center {
+  color: #bdbdbd;
+  position: fixed;
+  left: 8.33333%;
+  right: 8.33333%;
+  top: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 4rem;
+  padding-left: 4rem;
+}
+.flex-container-center > * {
+  cursor: pointer;
+}
+.fa-circle-left,
+.fa-circle-right {
+  transition: color 0.5s ease-out; /* Add a smooth transition for the color change */
+}
+.fa-circle-left:hover {
+  color: black;
+}
+.fa-circle-right:hover {
+  color: black;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.fa-heart:active {
+  animation: heartBeat 0.8s;
+}
+.bgred {
+  color: #f44336;
+}
+
+.top-container {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  right: 0;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.model-title {
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+}
+.setting-container {
+  position: fixed;
+  top: 15vh;
+  left:15vw;
+  background-color: gray;
+  z-index: 1000;
+  width: 70vw;
+  height: 70vh;
+  border-radius: 2rem;
+  transform:  scale(0);
+  transition: transform 0.2s ease;
+}
+
+.setting-container.active {
+  transform:  scale(1);
+}
+.hidden{
+  transform:  scale(0);
+  display: none;
+}
