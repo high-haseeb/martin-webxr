@@ -6,7 +6,9 @@
 #bg {
   position: fixed;
   top: 0;
-  left: 0;
+  @media screen and (min-width: 768px) {
+    left: 8.3333%;
+  }
 }
 
 .fixed-container-left {
@@ -15,8 +17,8 @@
   right: 0;
   width: 8.33333%;
   height: 100vh;
-  border-left: 2px solid;
-  border-color: #e0e0e0;
+  /* border-left: 2px solid; */
+  /* border-color: #e0e0e0; */
   display: none;
   @media screen and (min-width: 768px) {
     display: block;
@@ -56,6 +58,7 @@
   height: 100vh;
   border-right: 2px solid;
   border-color: #e0e0e0;
+  background-color: white;
   display: none;
   @media screen and (min-width: 768px) {
     display: block;
@@ -63,35 +66,8 @@
   @media screen and (min-width: 1024px) {
     display: block;
   }
-}
 
-.flex-container-center {
-  color: #bdbdbd;
-  position: fixed;
-  left: 8.33333%;
-  right: 8.33333%;
-  top: 50%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-items: center;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 4rem;
-  padding-left: 4rem;
-}
-.flex-container-center > * {
-  cursor: pointer;
-}
-.fa-circle-left,
-.fa-circle-right {
-  transition: color 0.5s ease-out; /* Add a smooth transition for the color change */
-}
-.fa-circle-left:hover {
-  color: black;
-}
-.fa-circle-right:hover {
-  color: black;
+  box-shadow: 8px 0 13px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes heartBeat {
@@ -127,24 +103,36 @@
   font-size: 2rem;
   font-weight: bold;
   font-family: "Inter", sans-serif;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
 }
 .setting-container {
   position: fixed;
   top: 15vh;
-  left:15vw;
+  left: 15vw;
   background-color: gray;
   z-index: 1000;
   width: 70vw;
   height: 70vh;
   border-radius: 2rem;
-  transform:  scale(0);
+  transform: scale(0);
   transition: transform 0.2s ease;
 }
 
 .setting-container.active {
-  transform:  scale(1);
+  transform: scale(1);
 }
-.hidden{
-  transform:  scale(0);
+.hidden {
+  transform: scale(0);
   display: none;
+}
+#favicon {
+  width: 4rem;
+  /* height: 2rem; */
+}
+.setting-bt-flex {
+  display: flex;
+  flex-grow: 2;
+  order: 1;
+  align-items: flex-end;
+  padding-bottom: 4rem;
 }
