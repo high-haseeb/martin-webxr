@@ -1,6 +1,9 @@
 class ARButton {
   static createButton(renderer, sessionInit = {}) {
-    const button = document.createElement("button");
+    // const button = document.querySelector(".fa-vr-cardboard")
+    // const button = document.getElementById("vr-cardboard")
+    const button = document.createElement('button')
+    button.classList.add("ARButton")
 
     function showStartAR(/*device*/) {
       if (sessionInit.domOverlay === undefined) {
@@ -61,23 +64,24 @@ class ARButton {
 
       //
 
-      button.style.display = "";
+      // button.style.display = "";
 
-      button.style.cursor = "pointer";
-      button.style.left = "calc(50% - 75px)";
-      button.style.width = "150px";
+      // button.style.cursor = "pointer";
+      // button.style.left = "calc(50% - 75px)";
+      // button.style.width = "150px";
       button.textContent = "START AR";
-      button.style.fontFamily = "'Inter', sans-serif";
-      button.style.fontWeight = "bold";
-      button.style.color = "black";
-      button.style.fontSize = "16px";
-      button.onmouseenter = function() {
-        button.style.opacity = "1.0";
-      };
+      // button.style.fontFamily = "'Inter', sans-serif";
+      // button.style.fontWeight = "bold";
+      // button.style.color = "black";
+      // button.style.fontSize = "16px";
+      // button.onmouseenter = function() {
+      //   button.style.opacity = "1.0";
+      //   button.style.color = "#7758dc"
+      // };
 
-      button.onmouseleave = function() {
-        button.style.opacity = "0.9";
-      };
+      // button.onmouseleave = function() {
+      //   button.style.opacity = "0.9";
+      // };
 
       button.onclick = function() {
         if (currentSession === null) {
@@ -86,25 +90,26 @@ class ARButton {
           currentSession.end();
         }
       };
+
     }
 
     function disableButton() {
-      button.style.display = "";
-
-      button.style.cursor = "auto";
-      button.style.left = "calc(50% - 75px)";
-      button.style.width = "150px";
-
-      button.onmouseenter = null;
-      button.onmouseleave = null;
-
-      button.onclick = null;
+      // button.style.display = "";
+      //
+      // button.style.cursor = "auto";
+      // button.style.left = "calc(50% - 75px)";
+      // button.style.width = "150px";
+      //
+      // button.onmouseenter = null;
+      // button.onmouseleave = null;
+      //
+      // button.onclick = null;
     }
 
     function showARNotSupported() {
       disableButton();
 
-      button.textContent = "AR NOT SUPPORTED";
+      button.textContent = "AR IS ONLY SUPPORTED ON MOBILE DEVICES";
     }
 
     function showARNotAllowed(exception) {
@@ -116,25 +121,25 @@ class ARButton {
     }
 
     function stylizeElement(element) {
-      element.style.position = "absolute";
-      element.style.bottom = "20px";
-      element.style.padding = "12px 6px";
-      element.style.border = "1px solid #fff";
-      element.style.borderRadius = "4px";
-      element.style.background = "rgba(0,0,0,0.1)";
-      element.style.color = "#fff";
-      element.style.font = "normal 13px sans-serif";
-      element.style.textAlign = "center";
-      element.style.opacity = "0.5";
-      element.style.outline = "none";
-      element.style.zIndex = "999";
+      // element.style.position = "absolute";
+      // element.style.bottom = "20px";
+      // element.style.padding = "12px 6px";
+      // element.style.border = "1px solid #fff";
+      // element.style.borderRadius = "4px";
+      // element.style.background = "rgba(0,0,0,0.1)";
+      // element.style.color = "#7758dc";
+      // element.style.font = "normal 13px sans-serif";
+      // element.style.textAlign = "center";
+      // element.style.opacity = "0.5";
+      // element.style.outline = "none";
+      // element.style.zIndex = "999";
     }
 
     if ("xr" in navigator) {
-      button.id = "ARButton";
-      button.style.display = "none";
+      // button.id = "ARButton";
+      // button.style.display = "none";
 
-      stylizeElement(button);
+      // stylizeElement(button);
 
       navigator.xr
         .isSessionSupported("immersive-ar")

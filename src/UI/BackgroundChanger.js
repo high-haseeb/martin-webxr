@@ -4,15 +4,8 @@ class BackgroundChanger {
   constructor(scene) {
     this.currBgCount = 0;
     this.scene = scene;
-    this.bgArr = ["space", "mountain", "#ff9f8f", "#fb4f90"];
+    this.bgArr = ["space", "mountain", "#ff9f8f", "#fb4f90", "#ffffff"];
     this.format = ".png";
-
-    this.changeBt = document.querySelector(".fa-panorama");
-    this.resetBt = document.querySelector(".fa-images");
-    this.changeBt.addEventListener("click", this.changeBackground.bind(this));
-    this.resetBt.addEventListener("click", () => {
-      this.scene.background = new Color(0xffffff);
-    });
   }
 
   changeBackground() {

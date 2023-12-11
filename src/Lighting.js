@@ -9,7 +9,8 @@ class LightingSetup {
   setupLighting() {
     // Directional light
     const directionalLight = new DirectionalLight(0xffffff, 3);
-    directionalLight.position.set(1, 1, 1).normalize();
+    directionalLight.position.set(5, 10, 5);
+    directionalLight.castShadow = true;
     this.scene.add(directionalLight);
 
     // Ambient light
