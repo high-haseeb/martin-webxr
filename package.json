@@ -16,6 +16,7 @@
   "dependencies": {
     "@tweenjs/tween.js": "^21.0.0",
     "@vitejs/plugin-basic-ssl": "^1.0.2",
+    "qrcode": "^1.5.3",
     "three": "^0.159.0",
     "three-usdz-loader": "^1.0.7",
     "vercel": "^32.6.1"

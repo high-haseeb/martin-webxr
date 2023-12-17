@@ -5,6 +5,7 @@ class VRButton {
 		// const button = document.createElement( 'button' );
 		// const button = document.getElementById("vr-cardboardcontainer")
     const button = vrbutton;
+		if(!button) return;
 		function showEnterVR( /*device*/ ) {
 
 			let currentSession = null;
@@ -199,3 +200,4 @@ VRButton.xrSessionIsGranted = false;
 VRButton.registerSessionGrantedListener();
 
 export { VRButton };
+

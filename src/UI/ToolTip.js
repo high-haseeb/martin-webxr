@@ -1,6 +1,7 @@
 class ToolTip {
-  constructor(position) {
+  constructor(container, position) {
     this.position = position
+    this.container = container;
     this.toolTipSetup();
 
   }
@@ -19,12 +20,10 @@ class ToolTip {
   }
 
   toolTipSetup() {
-    const container = document.getElementById("ARVeiwerContainer");
     this.tooltip = document.createElement("div");
     this.tooltip.classList.add("tooltip");
     this.tooltip.classList.add(`${this.position}-tooltip`);
-    console.log(this.tooltip)
-    container.appendChild(this.tooltip);
+    this.container.appendChild(this.tooltip);
   }
 }
 export default ToolTip;

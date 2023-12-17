@@ -3,21 +3,21 @@ import Bar from "./UI/BottomBar";
 import ToolTip from "./UI/ToolTip";
 import BackgroundChanger from "./UI/BackgroundChanger";
 import LanguageMenu from "./UI/Languages";
+import { QrCode } from "./UI/QrCode/Qrcode";
 
 class IconManager {
   constructor(targetDiv, animator, scene) {
-    this.targetDiv = document.getElementById(targetDiv);
+    this.container = targetDiv;
 
     this.animator = animator;
     this.scene = scene;
 
-
     this.backgroundChanger = new BackgroundChanger(this.scene);
-    this.languageChanger = new LanguageMenu(this.targetDiv);
-    if (!this.targetDiv) {
+    this.languageChanger = new LanguageMenu(this.container);
+    if (!this.container) {
       console.error(`element with id: ${targetDiv} not found.`);
     }
-    this.targetDiv.classList.add("parent");
+    this.container.classList.add("parent");
 
     this.topIcons = [
       { name: "circle", tooltip: "online status", callback: this.test },
@@ -29,29 +29,63 @@ class IconManager {
       { name: "cube", tooltip: "standard veiws", callback: () => this.animator.standardVeiws() },
       { name: "rotate", tooltip: "rotate", callback: () => this.animator.rotate() },
       { name: "up-right-and-down-left-from-center", tooltip: "zoom", callback: () => this.animator.zoom() },
-      { name: "camera", tooltip: "camera_backend", callback: this.test },
-      {
-        name: "eye",
-        tooltip: "change background",
-        callback: () => this.backgroundChanger.changeBackground()
-      },
+      { name: "unity", tooltip: "Open AR", callback: () => this.checkXR() },
+      // {
+      //   name: "eye",
+      //   tooltip: "change background",
+      //   callback: () => this.backgroundChanger.changeBackground()
+      // },
       { name: "vr-cardboard", tooltip: "enter VR", callback: this.test },
       { name: "save", tooltip: "save_backend", callback: this.test },
-      { name: "gear", tooltip: "settings", callback: this.test },
-      { name: "globe", tooltip: "change language", callback: (event) => this.languageChanger.loadMenu(event)},
+      // { name: "gear", tooltip: "settings", callback: this.test },
+      // { name: "globe", tooltip: "change language", callback: (event) => this.languageChanger.loadMenu(event) },
       { name: "share", tooltip: "share", callback: () => this.share() },
       { name: "expand", tooltip: "fullscreen", callback: () => this.fullscreen() },
     ];
+  }
+  checkXR() {
+    if ("xr" in navigator) {
+      navigator.xr.isSessionSupported("immersive-ar").then((supported) => {
+        if (supported) {
+          console.log("AR is supported on this device!");
+        } else {
+          QrCode(this.container, "unity");
+          console.log("AR is not supported on this device.");
+        }
+      });
+    } else {
+      console.log("WebXR not supported in this browser.");
+    }
+  }
+  loadBars() {
+    new Bar(this.container, "BottomBar", this.bottomIcons, new ToolTip(this.container, "bottom")).addHideBar();
+    new Bar(this.container, "TopBar", this.topIcons, new ToolTip(this.container, "top"));
+  }
+  setCallbackByNameTop(name, callback) {
+    const icon = this.topIcons.find((icon) => icon.name === name);
 
-    new Bar(this.targetDiv, "BottomBar", this.bottomIcons, new ToolTip("bottom")).addHideBar();
-    new Bar(this.targetDiv, "TopBar", this.topIcons, new ToolTip("top"));
+    if (icon) {
+      icon.callback = () => callback();
+    } else {
+      console.error(`Icon with name "${name}" not found.`);
+    }
+  }
+
+  setCallbackByNameBottom(name, callback) {
+    const icon = this.bottomIcons.find((icon) => icon.name === name);
+
+    if (icon) {
+      icon.callback = callback;
+    } else {
+      console.error(`Icon with name "${name}" not found.`);
+    }
   }
 
   test() {
     console.log("callbacks are working");
   }
   fullscreen() {
-    this.toggleFullscreen(this.targetDiv);
+    this.toggleFullscreen(this.container);
   }
 
   share() {

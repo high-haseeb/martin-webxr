@@ -2,19 +2,18 @@
 .Bar {
   position: absolute;
   transform: translate(50%, 0);
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   height: 3rem;
   display: flex;
   justify-content: center;
-  gap: 5%;
   pointer-events: all;
   align-items: center;
-  background-color: rgba(169, 169, 169, 0.6);
-  backdrop-filter: blur(10px);
   transition: transform 0.5s ease;
 }
 
 .BottomBar {
+  background-color: rgba(169, 169, 169, 0.6);
+  backdrop-filter: blur(10px);
   right: 50%;
   bottom: 2rem;
   padding: 0 3rem 0 3rem;
@@ -22,7 +21,7 @@
 
 .TopBar {
   top: 1.5rem;
-  right: 70%;
+  right: 80%;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -80,26 +79,26 @@
   transition: ease 0.1s;
 }
 
+
 .icon-container {
   width: 3rem;
   height: 3rem;
   border-radius: 1rem;
-  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
-.icon-container:hover {
-  background-color: rgba(169, 169, 169, 0.9);
-}
+
 
 .icon {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .icon-container:hover > * {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 .tooltip {
@@ -123,20 +122,26 @@
 }
 
 #bars {
-  right: 2rem;
+  right: 1rem;
 }
 
 #videocontainer,
 #messagecontainer,
 #circlecontainer {
-  height: 2rem;
-  width: 2rem;
+  height: 4rem;
+  width: 4rem;
+}
+#videocontainer:hover,
+#messagecontainer:hover,
+#circlecontainer:hover {
+  backdrop-filter: blur(10px);
+  background-color: rgba(169, 169, 169, 0.9);
 }
 
 #video,
 #message,
 #circle {
-  font-size: 1rem;
+  font-size: 2rem;
 }
 
 #circlecontainer:hover {
@@ -192,4 +197,57 @@
 }
 .hidden {
   display: none;
+}
+.small.TopBar,
+.medium.TopBar {
+  /* background-color: orange; */
+  flex-direction: column;
+  width: 1rem;
+  height: auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  right: auto;
+  left: 1%;
+}
+
+.small.BottomBar,
+.medium.BottomBar {
+  top: 50%;
+  right: 1rem;
+  transform: translate(0, -50%);
+  flex-direction: column;
+  /* width: 5rem; */
+  height: fit-content;
+  padding: 1rem 0 1rem 0;
+}
+
+.small.moveup,
+.medium.moveup {
+  transform: translateY(-180%);
+}
+
+.small.movedown,
+.medium.movedown {
+  transform: translateY(-50%);
+}
+
+#barscontainer.small,
+#barscontainer.medium {
+  /* z-index: initial; */
+  /* background-color: orange; */
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+
+  background-color: rgba(169, 169, 169, 0.6);
+  backdrop-filter: blur(10px);
+  pointer-events: all;
+  position: absolute;
+  top: 1.3rem;
+  right: 1rem;
+}
+
+#barscontainer.small > *,
+#barscontainer.medium > * {
+  display: block;
 }

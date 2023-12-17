@@ -1,5 +1,4 @@
 
-// vite.config.js
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -9,5 +8,8 @@ export default defineConfig({
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
     },
+  build: {
+    outDir: '../public/vite', // Output to Laravel's public directory
+  },
   },
 });

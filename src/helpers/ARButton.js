@@ -1,10 +1,10 @@
 class ARButton {
-  static createButton(renderer, sessionInit = {}) {
+  static createButton(buttonId, renderer, sessionInit = {}) {
     // const button = document.querySelector(".fa-vr-cardboard")
     // const button = document.getElementById("vr-cardboard")
-    const button = document.createElement('button')
-    button.classList.add("ARButton")
-
+    // const button = document.createElement('button')
+    // button.classList.add("ARButton") 
+    const button = buttonId;
     function showStartAR(/*device*/) {
       if (sessionInit.domOverlay === undefined) {
         const overlay = document.createElement("div");
@@ -17,7 +17,7 @@ class ARButton {
         svg.style.position = "absolute";
         svg.style.right = "20px";
         svg.style.top = "20px";
-        svg.addEventListener("click", function() {
+        svg.addEventListener("click", function () {
           currentSession.end();
         });
         overlay.appendChild(svg);
@@ -47,7 +47,7 @@ class ARButton {
 
         await renderer.xr.setSession(session);
 
-        button.textContent = "STOP AR";
+        // button.textContent = "STOP AR";
         sessionInit.domOverlay.root.style.display = "";
 
         currentSession = session;
@@ -56,7 +56,7 @@ class ARButton {
       function onSessionEnded(/*event*/) {
         currentSession.removeEventListener("end", onSessionEnded);
 
-        button.textContent = "START AR";
+        // button.textContent = "START AR";
         sessionInit.domOverlay.root.style.display = "none";
 
         currentSession = null;
@@ -69,7 +69,7 @@ class ARButton {
       // button.style.cursor = "pointer";
       // button.style.left = "calc(50% - 75px)";
       // button.style.width = "150px";
-      button.textContent = "START AR";
+      // button.textContent = "START AR";
       // button.style.fontFamily = "'Inter', sans-serif";
       // button.style.fontWeight = "bold";
       // button.style.color = "black";
@@ -83,14 +83,13 @@ class ARButton {
       //   button.style.opacity = "0.9";
       // };
 
-      button.onclick = function() {
+      button.onclick = function () {
         if (currentSession === null) {
           navigator.xr.requestSession("immersive-ar", sessionInit).then(onSessionStarted);
         } else {
           currentSession.end();
         }
       };
-
     }
 
     function disableButton() {
@@ -109,7 +108,7 @@ class ARButton {
     function showARNotSupported() {
       disableButton();
 
-      button.textContent = "AR IS ONLY SUPPORTED ON MOBILE DEVICES";
+      // button.textContent = "AR IS ONLY SUPPORTED ON MOBILE DEVICES";
     }
 
     function showARNotAllowed(exception) {
@@ -117,7 +116,7 @@ class ARButton {
 
       console.warn("Exception when trying to call xr.isSessionSupported", exception);
 
-      button.textContent = "AR NOT ALLOWED";
+      // button.textContent = "AR NOT ALLOWED";
     }
 
     function stylizeElement(element) {
@@ -143,7 +142,7 @@ class ARButton {
 
       navigator.xr
         .isSessionSupported("immersive-ar")
-        .then(function(supported) {
+        .then(function (supported) {
           supported ? showStartAR() : showARNotSupported();
         })
         .catch(showARNotAllowed);
@@ -171,4 +170,4 @@ class ARButton {
   }
 }
 
-export  { ARButton };
+export { ARButton };

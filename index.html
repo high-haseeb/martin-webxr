@@ -9,10 +9,16 @@
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
   </head>
   <body>
-    <div id="ARVeiwerContainer">
-      <canvas id="bg"></canvas>
+    <!-- <div id="container" style="height: 50vw; width:50vh"> -->
+    <div id="container" style="background-color: orange;width: 100vw; height:100vh;">
+      <!-- <canvas id="bg"></canvas> -->
     </div>
 
     <script type="module" src="./src/ARVeiwer.js"></script>
+    <script type="module">
+      import { ARScene } from "./src/ARVeiwer.js";
+      let veiw = new ARScene("container","./Mixer.glb");
+      veiw.animate()
+    </script>
   </body>
 </html>

@@ -6,9 +6,39 @@ import LightingSetup from "./Lighting";
 import IconManager from "./IconManager";
 import ModelLoader from "./loaders/ModelLoader";
 import { VRButton } from "./VRButton";
+import '../style.css'
 
-class ARScene {
-  constructor(modelPath) {
+export class ARScene {
+  constructor(
+    containerId,
+    modelPath,
+    cameraCallback = () => {
+      console.log("please add camera api");
+    },
+    onlineCallback = () => {
+      console.log("please add online api");
+    },
+    commentCallback = () => {
+      console.log("please add comment api");
+    },
+    saveCallback = () => {
+      console.log("please add save api");
+    },
+
+    streamCallback = () => {
+      console.log("please add save api");
+    },
+  ) {
+    this.container = document.getElementById(containerId);
+    if (this.container.tagName.toLowerCase() !== "div") {
+      console.log("not an div");
+    }
+    this.cameraCallback = cameraCallback;
+    this.onlineCallback = onlineCallback;
+    this.commentCallback = commentCallback;
+    this.saveCallback = saveCallback;
+    this.streamCallback = streamCallback;
+
     this.setup();
     this.loadModel(modelPath);
     this.setupEventListeners();
@@ -16,9 +46,10 @@ class ARScene {
 
   setup() {
     this.setupScene();
-    this.setupCamera();
     this.setupRenderer();
+    this.setupCamera();
     this.setupControls();
+    this.isPaused = false;
     new LightingSetup(this.scene);
   }
   setupScene() {
@@ -26,12 +57,16 @@ class ARScene {
     this.scene.background = new THREE.Color(0xfffffb);
   }
   setupCamera() {
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(75, this.container.clientWidth / this.container.clientHeight, 0.1, 1000);
     this.camera.position.z = 5;
   }
   setupRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("#bg"), antialias: true, alpha: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    const canvas = document.createElement("canvas");
+    canvas.id = "bg";
+    this.container.appendChild(canvas);
+    // this.renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("#bg"), antialias: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.xr.enabled = true;
     this.hitTestSource = null;
@@ -56,22 +91,36 @@ class ARScene {
       this.scene.add(this.model);
       this.isModelLoaded = true;
       this.setupAnimator();
-      this.iconManager = new IconManager("ARVeiwerContainer", this.animator, this.scene);
-      document.body.appendChild(ARButton.createButton(this.renderer, { requiredFeatures: ["hit-test"] }));
-      const vrButton = document.getElementById("vr-cardboardcontainer");
-      VRButton.createButton(this.renderer, vrButton);
+      this.setupUI();
     });
   }
 
+  setupUI() {
+    this.iconManager = new IconManager(this.container, this.animator, this.scene);
+
+    // this.iconManager.setCallbackByNameBottom("camera", this.cameraCallback);
+    this.iconManager.setCallbackByNameTop("circle", this.onlineCallback);
+    this.iconManager.setCallbackByNameTop("video", this.streamCallback);
+    this.iconManager.setCallbackByNameTop("message", this.commentCallback);
+    // this.iconManager.setCallbackByNameBottom("save", this.saveCallback);
+    this.iconManager.loadBars();
+
+    const vrButton = document.getElementById("vr-cardboardcontainer");
+    const arButton = document.getElementById("unity")
+    arButton.classList.add("fa-brands")
+    ARButton.createButton(arButton,this.renderer, { requiredFeatures: ["hit-test"] });
+    VRButton.createButton(this.renderer, vrButton);
+  }
+  setCameraCallback(callback) {}
   setupEventListeners() {
     this.controller.addEventListener("select", () => {
-      console.log("ar_event_click");
+      this.isPaused = true;
     });
 
     window.addEventListener("resize", () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+      this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
     this.renderer.xr.addEventListener("sessionstart", () => {
@@ -85,9 +134,10 @@ class ARScene {
       console.log("session ended");
       this.model.visible = true;
       this.model.matrixAutoUpdate = true;
-      this.camera.aspect = window.innerWidth / window.innerHeight;
+      // this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
       this.camera.position.z = 5;
     });
   }
@@ -121,7 +171,9 @@ class ARScene {
         if (hitTestResults.length) {
           const hit = hitTestResults[0];
           this.model.visible = true;
-          this.model.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
+          if (!this.isPaused) {
+            this.model.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
+          }
         } else {
           this.model.visible = false;
         }
@@ -134,7 +186,3 @@ class ARScene {
     this.renderer.render(this.scene, this.camera);
   }
 }
-
-// const arScene = new ARScene("./usdz/saeukkang.usdz");
-const arScene = new ARScene("./Mixer.glb");
-arScene.animate();
