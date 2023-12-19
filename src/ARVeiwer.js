@@ -6,7 +6,7 @@ import LightingSetup from "./Lighting";
 import IconManager from "./IconManager";
 import ModelLoader from "./loaders/ModelLoader";
 import { VRButton } from "./VRButton";
-import '../style.css'
+import "../style.css";
 
 export class ARScene {
   constructor(
@@ -45,12 +45,20 @@ export class ARScene {
   }
 
   setup() {
+    var polyfill = new WebXRPolyfill();
     this.setupScene();
     this.setupRenderer();
     this.setupCamera();
     this.setupControls();
     this.isPaused = false;
     new LightingSetup(this.scene);
+    this.reticle = new THREE.Mesh(
+      new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
+      new THREE.MeshBasicMaterial(),
+    );
+    this.reticle.matrixAutoUpdate = false;
+    this.reticle.visible = false;
+    this.scene.add(this.reticle);
   }
   setupScene() {
     this.scene = new THREE.Scene();
@@ -94,6 +102,12 @@ export class ARScene {
       this.setupUI();
     });
   }
+  onSelect() {
+    if (this.reticle.visible) {
+      this.reticle.matrix.decompose(this.model.position, this.model.quaternion, this.model.scale);
+      this.scene.add(this.model);
+    }
+  }
 
   setupUI() {
     this.iconManager = new IconManager(this.container, this.animator, this.scene);
@@ -106,15 +120,18 @@ export class ARScene {
     this.iconManager.loadBars();
 
     const vrButton = document.getElementById("vr-cardboardcontainer");
-    const arButton = document.getElementById("unity")
-    arButton.classList.add("fa-brands")
-    ARButton.createButton(arButton,this.renderer, { requiredFeatures: ["hit-test"] });
+    const arButton = document.getElementById("unity");
+    arButton.classList.add("fa-brands");
+    ARButton.createButton(arButton, this.renderer, { requiredFeatures: ["hit-test"] });
     VRButton.createButton(this.renderer, vrButton);
   }
-  setCameraCallback(callback) {}
+  // setCameraCallback(callback) { }
+
   setupEventListeners() {
     this.controller.addEventListener("select", () => {
+      this.onSelect();
       this.isPaused = true;
+      console.log("pressed");
     });
 
     window.addEventListener("resize", () => {
@@ -124,17 +141,15 @@ export class ARScene {
     });
 
     this.renderer.xr.addEventListener("sessionstart", () => {
+      this.scene.remove(this.model);
       console.log("session started");
       this.scene.background = null;
-      this.model.matrixAutoUpdate = false;
-      this.model.visible = false;
     });
 
     this.renderer.xr.addEventListener("sessionend", () => {
       console.log("session ended");
       this.model.visible = true;
       this.model.matrixAutoUpdate = true;
-      // this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
@@ -170,12 +185,12 @@ export class ARScene {
 
         if (hitTestResults.length) {
           const hit = hitTestResults[0];
-          this.model.visible = true;
+          this.reticle.visible = true;
           if (!this.isPaused) {
-            this.model.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
+            this.reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
           }
         } else {
-          this.model.visible = false;
+          this.reticle.visible = false;
         }
       }
     }
